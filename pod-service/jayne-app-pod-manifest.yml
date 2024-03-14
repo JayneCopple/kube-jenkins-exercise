@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: jayne-new-pod
+  name: jayne-new-pod
+spec:
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/jayne-task1-image:v1
+    name: jayne-new-pod
+    env:
+    - name: YOUR_NAME
+      value: Jaynee

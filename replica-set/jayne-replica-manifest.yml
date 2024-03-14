@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: jayne-new-pod
+  name: jayne-app-rs
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 33%
+      maxUnavailable: 33%
+  selector:
+    matchLabels:
+      run: jayne-new-pod
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: jayne-new-pod
+    spec:
+      containers:
+      - image: eu.gcr.io/lbg-mea-17/jayne-task1-image:v1
+        name: jayne-new-pod
+        env:
+        - name: YOUR_NAME
+          value: Jaynee

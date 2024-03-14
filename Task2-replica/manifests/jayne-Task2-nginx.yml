@@ -1,0 +1,40 @@
+apiVersion: v1
+# Pod
+kind: Pod
+metadata:
+# label (run:) must match
+  labels:
+    run: jayne-nginx-pod
+  name: jayne-nginx-pod
+spec:
+  containers:
+# change from custom nginx image to general nginx image and use configMap for customisation
+  - image: nginx:latest
+    name: jayne-nginx-container
+# add details of where to mount the volume. Name MUST match name in volumnes section below
+    volumeMounts:
+      - name: nginx-volume
+        mountPath: /etc/nginx
+# add volume section. Volme name MUST match name above
+# configMap name MUST match the name in the confif map yml file
+  volumes:
+  - name: nginx-volume
+    configMap:
+      name: nginx-configmap
+---
+apiVersion: v1
+# Service
+kind: Service
+metadata:
+  labels:
+    run: jayne-nginx
+  name: jayne-nginx
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+# selector must match pod label (run:)
+  selector:
+    run: jayne-nginx-pod
+  type: LoadBalancer

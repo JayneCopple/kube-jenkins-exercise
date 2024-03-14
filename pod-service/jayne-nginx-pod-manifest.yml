@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: jayne-nginx-pod
+  name: jayne-nginx-pod
+spec:
+  containers:
+  - image: nginx:latest
+    name: jayne-nginx
+    volumeMounts:
+      - name: nginx-vol
+        mountPath: /etc/nginx
+  volumes:
+  - name: nginx-vol
+    configMap:
+      name: nginx-config
+

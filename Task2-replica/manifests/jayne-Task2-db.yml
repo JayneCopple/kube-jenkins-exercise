@@ -1,0 +1,42 @@
+apiVersion: v1
+# define pod details
+kind: Pod
+metadata:
+# pod label must match service selector value
+  labels:
+    run: mysql-db
+  name: jayne-db-pod
+spec:
+#specify image for 
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/jayne-task2-db:v1
+# name doesn't matter for container
+    name: jayne-db-container
+#envirpnment variable for root password for DB
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-cred
+          key: MYSQL_ROOT_PASSWORD
+
+---
+apiVersion: v1
+#define service details
+kind: Service
+metadata:
+# service label don't matter
+  labels:
+    run: jayne-db-app
+# service needs to be called mysql, so flask app can find it
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+# service selector value MUST match pod label value
+  selector:
+    run: mysql-db
+  type: ClusterIP
+

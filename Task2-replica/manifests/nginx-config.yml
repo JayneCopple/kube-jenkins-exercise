@@ -1,0 +1,17 @@
+apiVersion: v1
+# declare configMap details
+kind: ConfigMap
+# config map name MUST match the name referenced in the pod manifest yml file
+metadata:
+  name: nginx-configmap
+data:
+  nginx.conf: |
+    events {}
+    http {
+      server {
+        listen 80;
+        location / {
+          proxy_pass http://flask-app:5000;
+        }
+       }
+    }
